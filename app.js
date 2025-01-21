@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
+const rotaUsuarios = require("./routes/usuarios");
 
 //config
     //mongoDB
@@ -23,6 +24,8 @@ const DB_PASSWORD = process.env.DB_PASSWORD;
 app.get("/", (req,res) => {
     res.send("Ola mundo");
 })
+
+app.use("/usuarios", rotaUsuarios);
 
 //server
 app.listen(port, () => {
