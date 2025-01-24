@@ -8,6 +8,7 @@ const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const rotaUsuarios = require("./routes/usuarios");
 const rotaIngressos = require("./routes/ingressos");
+const rotaCompras = require("./routes/compras");
 
 //config
     //mongoDB
@@ -28,6 +29,7 @@ app.get("/", (req,res) => {
 
 app.use("/usuarios", rotaUsuarios);
 app.use("/ingressos", rotaIngressos);
+app.use("/compras", rotaCompras);
 
 //server
 app.listen(port, () => {

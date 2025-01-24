@@ -9,6 +9,10 @@ const Compra = new Schema({
     idUsuario: {
         type: mongoose.Types.ObjectId,
         ref: "usuarios"
+    },
+    quantidade: {
+        type: Number,
+        required: true
     }
 });
 
