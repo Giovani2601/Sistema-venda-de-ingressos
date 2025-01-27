@@ -1,0 +1,18 @@
+<div class="container">
+    <h1 class="titulo">{{title}}</h1>
+    <ul class="lista-ingressos">
+        {{#each ingressos}}
+            <li>
+                <div>
+                    <h4>{{nome}}</h4>
+                    {{#if quantidade}}
+                        <span class="disponivel">Quantidade disponível: {{quantidade}}</span>
+                    {{else}}
+                        <span class="indisponivel">Indisponível</span>
+                    {{/if}}
+                    <p>R$ {{preco}}</p>
+                </div>
+                <button class="botao-comprar" {{#if quantidade}}enabled{{else}}disabled{{/if}}>Comprar</button>
+        {{/each}}
+    </ul>
+</div>

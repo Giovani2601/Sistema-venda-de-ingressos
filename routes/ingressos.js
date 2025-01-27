@@ -37,8 +37,11 @@ router.post("/", auth.verificaAdmin, async (req,res) => {
 //ver todos os ingressos adicionados (qualquer um no sistema consegue ver)
 router.get("/", async (req,res) => {
     try {
-        const ingressos = await Ingresso.find();
-        return res.status(200).json(ingressos);
+        const ingressos = await Ingresso.find().lean();
+        res.render("ingressos", {
+            title: "Ingressos",
+            ingressos: ingressos
+        })
     } catch(erro) {
         console.log("erro: "+erro);
         return res.status(500).json({errorMessage: "Erro interno no servidor"});

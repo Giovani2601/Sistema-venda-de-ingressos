@@ -9,6 +9,8 @@ const DB_PASSWORD = process.env.DB_PASSWORD;
 const rotaUsuarios = require("./routes/usuarios");
 const rotaIngressos = require("./routes/ingressos");
 const rotaCompras = require("./routes/compras");
+const { engine } = require("express-handlebars");
+const path = require("path");
 
 //config
     //mongoDB
@@ -22,9 +24,14 @@ const rotaCompras = require("./routes/compras");
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}))
 
+    //handlebars
+    app.engine("handlebars", engine({defaultLayout: "main"}));
+    app.set("view engine", "handlebars");
+    app.use(express.static(path.join(__dirname, "public")));
+
 //rotas
 app.get("/", (req,res) => {
-    res.send("Ola mundo");
+    res.render("principal", {title: "Ingressos"});
 })
 
 app.use("/usuarios", rotaUsuarios);

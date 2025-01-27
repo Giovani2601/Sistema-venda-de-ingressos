@@ -1,0 +1,152 @@
+:root {
+    --verde-escuro: #244242;
+    --verde-medio: #51bd9c;
+    --verde-claro: #a3e3b1;
+    --vermelho: #ff2121;
+    --branco: #FFFFFF;
+    --preto: #000000;
+    --amarelo: #ffe8b3;
+    --cinza: #f1f1f1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+}
+
+.cabecalho {
+    background-color: var(--verde-escuro);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 32px 64px;
+    color: var(--branco);
+}
+
+.cabecalho h1 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.cabecalho div {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+}
+
+.cabecalho div a {
+    color: var(--branco);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.25s;
+}
+
+.cabecalho div a:hover {
+    color: var(--verde-medio);
+}
+
+.principal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.principal div {
+    background-color: var(--amarelo);
+    height: 20%;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 26px;
+    box-shadow: 10px 10px 30px -9px rgba(0,0,0,0.75);
+}
+
+.principal div h4 {
+    color: var(--verde-escuro);
+}
+
+.principal div a {
+    text-decoration: none;
+    background-color: var(--verde-medio);
+    color: var(--branco);
+    padding: 10px 16px;
+    border-radius: 20px;
+    transition: all 0.25s;
+}
+
+.principal div a:hover {
+    background-color: var(--verde-escuro);
+}
+
+.container {
+    margin: 3em 10em;
+}
+
+.titulo {
+    color: var(--verde-escuro);
+    margin-bottom: 2em;
+}
+
+.lista-ingressos {
+    display: flex;
+    align-items: center;
+    gap: 4em;
+    list-style: none;
+}
+
+.lista-ingressos li {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--cinza);
+    padding: 16px;
+    border-radius: 10px;
+    min-height: 150px;
+    min-width: 200px;
+    color: var(--verde-escuro);
+    box-shadow: 5px 5px 15px -9px rgba(0,0,0,0.75);
+}
+
+.lista-ingressos li div {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.lista-ingressos li div h4 {
+    align-self: center;
+    border-bottom: 1px solid var(--verde-escuro);
+    padding: 0 10px 5px 10px;
+}
+
+.lista-ingressos li div p {
+    color: var(--verde-medio);
+    margin-top: 0.5em;
+}
+
+.indisponivel {
+    color: var(--vermelho);
+}
+
+.botao-comprar {
+    border: none;
+    background-color: var(--verde-medio);
+    padding: 10px;
+    color: var(--branco);
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+
+.botao-comprar:hover {
+    background-color: var(--verde-escuro);
+}
