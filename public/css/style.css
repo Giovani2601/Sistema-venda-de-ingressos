@@ -7,6 +7,7 @@
     --preto: #000000;
     --amarelo: #ffe8b3;
     --cinza: #f1f1f1;
+    --azul: #3f68ab;
 }
 
 * {
@@ -58,7 +59,7 @@ body {
 
 .principal div {
     background-color: var(--amarelo);
-    height: 20%;
+    height: 40%;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -149,4 +150,164 @@ body {
 
 .botao-comprar:hover {
     background-color: var(--verde-escuro);
+}
+
+.botao-comprar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.form-container {
+    display: flex;
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container div {
+    background-color: var(--cinza);
+    box-shadow: 5px 5px 15px -9px rgba(0,0,0,0.75);
+    padding: 16px;
+    border-radius: 16px;
+    width: 300px;
+}
+
+.form-container h1 {
+    color: var(--verde-escuro);
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.form-container h1::after {
+    content: "";
+    width: 30px; 
+    height: 5px; 
+    background-color: var(--verde-medio); 
+    position: absolute;
+    bottom: 0px; 
+    left: 0;
+    border-radius: 16px;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-container input {
+    border: none;
+    border-bottom: 2px solid var(--verde-escuro);
+    background-color: transparent;
+    padding: 10px 0 5px 0px;
+    transition: all 0.25s;
+}
+
+.form-container input:focus {
+    outline: none;
+    border-bottom: 2px solid var(--verde-medio);
+}
+
+.form-container input::placeholder {
+    font-weight: 600;
+}
+
+.form-container button {
+    border: none;
+    background-color: var(--verde-medio);
+    padding: 10px;
+    color: var(--branco);
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: 1em;
+}
+
+.form-container button:hover {
+    background-color: var(--verde-escuro);
+}
+
+.admin-area-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+
+.admin-acoes {
+    display: flex;
+    gap: 2em;
+}
+
+.admin-acoes a {
+    color: var(--verde-escuro);
+}
+
+.admin-acoes a:hover {
+    color: var(--verde-medio);
+}
+
+.admin-ingressos {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.admin-ingressos h2 {
+    color: var(--verde-escuro);
+    font-size: 22px;
+}
+
+.admin-ingressos ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.admin-ingressos li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--cinza);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.admin-ingressos li div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.botao-editar {
+    padding: 5px 10px;
+    border: none;
+    background-color: var(--azul);
+    color: var(--branco);
+    font-weight: 600;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+
+.botao-editar:hover {
+    background-color: #2d4b7c;
+}
+
+.botao-excluir {
+    padding: 5px 10px;
+    border: none;
+    background-color: var(--vermelho);
+    color: var(--branco);
+    font-weight: 600;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+
+.botao-excluir:hover {
+    background-color: #b31919;
 }

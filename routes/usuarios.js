@@ -8,6 +8,8 @@ require("dotenv").config();
 const SECRET = process.env.SECRET;
 const jwt = require("jsonwebtoken");
 const auth = require("../auth/auth");
+require("../models/Ingresso");
+const Ingresso = mongoose.model("ingressos");
 
 //inicia uma conta de admin (se nao houver nenhuma ja existente)
 router.get("/install", async (req,res) => {
@@ -32,6 +34,13 @@ router.get("/install", async (req,res) => {
     } catch (erro) {
         return res.status(500).json({errorMessage: "Erro interno no servidor, erro: "+erro});
     }
+})
+
+//tela de criar conta
+router.get("/criar-conta", (req,res) => {
+    res.render("criarConta", {
+        title: "Criar conta"
+    })
 })
 
 //criar conta comum
@@ -78,6 +87,14 @@ router.post("/", async (req,res) => {
     }
 })
 
+//tela de login no front
+router.get("/login", (req,res) => {
+    res.render("login", {
+        title: "Login"
+    })
+})
+
+//rota para fazer login
 router.post("/login", async (req,res) => {
     if(!req.body.email || typeof req.body.email === undefined || req.body.email === null) {
         return res.status(400).json({message: "Erro, e-mail de usuario invalido"});
@@ -104,6 +121,13 @@ router.post("/login", async (req,res) => {
     } catch(erro) {
         return res.status(500).json({errorMessage: "Erro interno no servidor, erro: "+erro});
     }
+})
+
+//tela de criar admins
+router.get("/criar-admin", (req,res) => {
+    res.render("criarAdmin", {
+        title: "Criar administrador"
+    })
 })
 
 //rota para criar admins (apenas admins)
@@ -149,6 +173,20 @@ router.post("/admin", auth.verificaAdmin, async (req,res) => {
     } catch(erro) {
         console.log("Erro: "+erro);
         return res.status(500).json({message: "Erro interno no servidor"});
+    }
+})
+
+//tela da area de administradores
+router.get("/area-admin", async (req,res) => {
+    try {
+        const ingressos = await Ingresso.find().lean();
+        res.render("areaAdmin", {
+            title: "Área de administradores",
+            ingressos: ingressos
+        })
+    } catch(erro) {
+        console.log("erro: "+erro);
+        return res.status(500).json({errorMessage: "Erro interno no servidor"});
     }
 })
 

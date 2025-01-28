@@ -1,0 +1,26 @@
+<div class="container">
+    <h1 class="titulo">{{title}}</h1>
+    <div class="admin-area-container">
+        <div class="admin-acoes">
+            <a href="">Adicionar ingresso</a>
+            <a href="/usuarios/criar-admin">Criar novo admin</a>
+        </div>
+
+        <div class="admin-ingressos">
+            <h2>Gerenciar ingressos</h2>
+            <ul>
+                {{#each ingressos}}
+                    <li>
+                        <p><strong>Nome:</strong> {{nome}}</p>
+                        <p><strong>Preço:</strong> {{preco}}</p>
+                        <p><strong>Quantidade:</strong> {{quantidade}}</p>
+                        <div>
+                            <button class="botao-editar">Editar</button>
+                            <button class="botao-excluir">Excluir</button>
+                        </div>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>
