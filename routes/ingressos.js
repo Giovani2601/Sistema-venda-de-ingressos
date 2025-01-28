@@ -5,6 +5,13 @@ require("../models/Ingresso");
 const Ingresso = mongoose.model("ingressos");
 const auth = require("../auth/auth");
 
+//tela para adicionar ingressos
+router.get("/adicionar-ingresso", (req,res) => {
+    res.render("adicionarIngressos", {
+        title: "Adicionar ingresso"
+    })
+})
+
 //adicionar ingressos (apenas admins)
 router.post("/", auth.verificaAdmin, async (req,res) => {
     if(!req.body.nome || typeof req.body.nome === undefined || req.body.nome === null) {
