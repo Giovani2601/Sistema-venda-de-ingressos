@@ -1,7 +1,15 @@
+{{#if erro}}
+    <div class="alerta-erro">{{erro}}</div>
+{{/if}}
+
+{{#if sucesso}}
+    <div class="alerta-sucesso">{{sucesso}}</div>
+{{/if}}
+
 <div class="form-container">
     <div>
         <h1>{{title}}</h1>
-        <form action="">
+        <form action="/usuarios/login" method="post">
             <input type="email" name="email" placeholder="E-mail">
             <input type="password" name="senha" placeholder="Senha">
             <button type="submit">Login</button>

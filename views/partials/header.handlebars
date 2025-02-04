@@ -1,11 +1,17 @@
 <header class="cabecalho">
     <h1>Sistema de venda de ingressos</h1>
     <div>
-        <a href="/usuarios/login">Login</a>
-        <a href="/usuarios/criar-conta">Criar conta</a>
         <a href="/ingressos">Início</a>
-        <a href="">Meus ingressos</a>
-        <a href="/usuarios/area-admin">Admin</a>
-        <a href="">Sair</a>
+        {{#if user}}
+            {{#if user.isAdmin}}
+                <a href="/usuarios/area-admin">Admin</a>
+            {{/if}}
+
+            <a href="/usuarios/meus-ingressos">Meus ingressos</a>
+            <a href="/usuarios/logout">Sair</a>
+        {{else}}
+            <a href="/usuarios/login">Login</a>
+            <a href="/usuarios/criar-conta">Criar conta</a>
+        {{/if}}
     </div>
 </header>

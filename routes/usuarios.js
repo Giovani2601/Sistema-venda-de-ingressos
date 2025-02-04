@@ -39,30 +39,36 @@ router.get("/install", async (req,res) => {
 //tela de criar conta
 router.get("/criar-conta", (req,res) => {
     res.render("criarConta", {
-        title: "Criar conta"
+        title: "Criar conta",
+        erro: req.flash("erro")
     })
 })
 
 //criar conta comum
 router.post("/", async (req,res) => {
     if(!req.body.nome || typeof req.body.nome === undefined || req.body.nome === null) {
-        return res.status(400).json({message: "Erro, nome de usuario invalido"});
+        req.flash("erro", "Erro, nome de usuario invalido")
+        return res.redirect("/usuarios/criar-conta");
     }
 
     if(!req.body.email || typeof req.body.email === undefined || req.body.email === null) {
-        return res.status(400).json({message: "Erro, e-mail de usuario invalido"});
+        req.flash("erro", "Erro, E-mail invalido")
+        return res.redirect("/usuarios/criar-conta");
     }
 
     if(!req.body.senha || typeof req.body.senha === undefined || req.body.senha === null) {
-        return res.status(400).json({message: "Erro, senha de usuario invalida"});
+        req.flash("erro", "Erro, senha invalida")
+        return res.redirect("/usuarios/criar-conta");
     }
 
     if(req.body.senha.length < 4) {
-        return res.status(400).json({message: "Erro, senha muito curta"});
+        req.flash("erro", "Erro, Senha muito curta")
+        return res.redirect("/usuarios/criar-conta");
     }
 
     if(req.body.senha2 !== req.body.senha) {
-        return res.status(400).json({message: "Erro, as senhas devem coincidir"})
+        req.flash("erro", "Erro, as senhas devem coincidir")
+        return res.redirect("/usuarios/criar-conta");
     }
 
     const salt = bcryptjs.genSaltSync(10);
@@ -77,11 +83,13 @@ router.post("/", async (req,res) => {
     try {
         const usuarioExistente = await Usuario.findOne({email: req.body.email});
         if(usuarioExistente) {
-            return res.status(400).json({message: "Erro, ja existe uma conta com este email"})
+            req.flash("erro", "Erro, ja existe uma conta com este email")
+            return res.redirect("/usuarios/criar-conta");
         }
 
         const usuarioSalvo = await novoUsuario.save();
-        return res.status(201).json({message: "Conta criada com sucesso!!!", usuarioSalvo:usuarioSalvo});
+        req.flash("sucesso", "Conta criada com sucesso!!!")
+        return res.redirect("/usuarios/login");
     } catch (erro) {
         return res.status(500).json({errorMessage: "Erro interno no servidor, erro: "+erro});
     }
@@ -90,34 +98,41 @@ router.post("/", async (req,res) => {
 //tela de login no front
 router.get("/login", (req,res) => {
     res.render("login", {
-        title: "Login"
+        title: "Login",
+        erro: req.flash("erro"),
+        sucesso: req.flash("sucesso")
     })
 })
 
 //rota para fazer login
 router.post("/login", async (req,res) => {
     if(!req.body.email || typeof req.body.email === undefined || req.body.email === null) {
-        return res.status(400).json({message: "Erro, e-mail de usuario invalido"});
+        req.flash("erro", "E-mail invalido");
+        return res.redirect("/usuarios/login");
     }
 
     if(!req.body.senha || typeof req.body.senha === undefined || req.body.senha === null) {
-        return res.status(400).json({message: "Erro, senha de usuario invalida"});
+        req.flash("erro", "Senha invalida");
+        return res.redirect("/usuarios/login");
     }
 
     try {
         const usuarioExistente = await Usuario.findOne({email: req.body.email});
         if(!usuarioExistente) {
-            return res.status(404).json({message: "Erro, nenhum usuario encontrado com este email"});
+            req.flash("erro", "Erro, nenhum usuario encontrado com este email")
+            return res.redirect("/usuarios/login")
         }
 
         const batem = await bcryptjs.compare(req.body.senha, usuarioExistente.senha);
         if(!batem) {
-            return res.status(400).json({message: "Erro, senha incorreta"});
+            req.flash("erro", "Senha incorreta");
+            return res.redirect("/usuarios/login");
         }
 
-        const token = jwt.sign({userId: usuarioExistente._id}, SECRET, {expiresIn: "1h"});
-        return res.status(200).json({message: "Login realizado com sucesso!!!", token:token});
-
+        const token = jwt.sign({userId: usuarioExistente._id, isAdmin: usuarioExistente.isAdmin}, SECRET, {expiresIn: "1h"});
+        res.cookie("token", token, { httpOnly: true, maxAge: 3600000 });
+        req.flash("sucesso", "Login realizado com sucesso!");
+        return res.redirect("/ingressos");
     } catch(erro) {
         return res.status(500).json({errorMessage: "Erro interno no servidor, erro: "+erro});
     }
@@ -188,6 +203,14 @@ router.get("/area-admin", async (req,res) => {
         console.log("erro: "+erro);
         return res.status(500).json({errorMessage: "Erro interno no servidor"});
     }
+})
+
+router.get("/logout", (req,res) => {
+    res.clearCookie("token");
+
+    req.flash("sucesso", "Logout realizado com sucesso!");
+
+    res.redirect("/ingressos");
 })
 
 module.exports = router;

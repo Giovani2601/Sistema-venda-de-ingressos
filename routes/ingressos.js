@@ -47,7 +47,9 @@ router.get("/", async (req,res) => {
         const ingressos = await Ingresso.find().lean();
         res.render("ingressos", {
             title: "Ingressos",
-            ingressos: ingressos
+            ingressos: ingressos,
+            erro: req.flash("erro"),
+            sucesso: req.flash("sucesso")
         })
     } catch(erro) {
         console.log("erro: "+erro);

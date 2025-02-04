@@ -6,7 +6,7 @@ require("dotenv").config();
 const SECRET = process.env.SECRET;
 
 async function verificaUser(req,res, next) {
-    const token = req.headers.authorization;
+    const token = req.cookies.token;
 
     if(!token){
         return res.status(401).json({message: "Erro, faça login novamente"});
@@ -29,7 +29,7 @@ async function verificaUser(req,res, next) {
 }
 
 async function verificaAdmin(req,res,next) {
-    const token = req.headers.authorization;
+    const token = req.cookies.token;
 
     if(!token){
         return res.status(401).json({message: "Erro, faça login novamente"});

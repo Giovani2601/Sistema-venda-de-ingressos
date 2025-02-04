@@ -1,10 +1,15 @@
+{{#if erro}}
+    <div class="alerta-erro">{{erro}}</div>
+{{/if}}
+
 <div class="form-container">
     <div>
         <h1>{{title}}</h1>
-        <form action="">
+        <form action="/usuarios" method="post">
             <input type="text" name="nome" placeholder="Nome">
             <input type="email" name="email" placeholder="E-mail">
             <input type="password" name="senha" placeholder="Senha">
+            <input type="password" name="senha2" placeholder="Repita a senha">
             <button type="submit">Criar conta</button>
         </form>
     </div>

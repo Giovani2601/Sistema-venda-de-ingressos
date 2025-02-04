@@ -11,6 +11,12 @@ const rotaIngressos = require("./routes/ingressos");
 const rotaCompras = require("./routes/compras");
 const { engine } = require("express-handlebars");
 const path = require("path");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const flash = require("connect-flash");
+const SESSAO_SECRET = process.env.SESSAO_SECRET;
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.SECRET;
 
 //config
     //mongoDB
@@ -29,7 +35,38 @@ const path = require("path");
     app.set("view engine", "handlebars");
     app.use(express.static(path.join(__dirname, "public")));
 
+    //cookie parser
+    app.use(cookieParser());
+
+    //session e flash para mensagens
+    app.use(session({
+        secret: SESSAO_SECRET,
+        resave: false,
+        saveUninitialized: true
+    }));
+    app.use(flash());
+
 //rotas
+app.use(async (req, res, next) => {
+    const token = req.cookies.token;
+
+    if (token) {
+        try {
+            const decoded = await jwt.verify(token, SECRET);
+            res.locals.user = {
+                id: decoded.userId,
+                isAdmin: decoded.isAdmin
+            };
+        } catch (erro) {
+            console.log("Erro ao verificar token:", erro);
+            res.locals.user = null;
+        }
+    } else {
+        res.locals.user = null;
+    }
+    next();
+});
+
 app.get("/", (req,res) => {
     res.render("principal", {title: "Ingressos"});
 })
