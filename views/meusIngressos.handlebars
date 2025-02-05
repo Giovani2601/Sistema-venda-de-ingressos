@@ -1,0 +1,16 @@
+<div class="container">
+    <h1 class="titulo">{{title}}</h1>
+
+    <div class="admin-ingressos">
+            <ul>
+                {{#each compras}}
+                    <li>
+                        <p><strong>Id da compra:</strong> {{_id}}</p>
+                        <p><strong>Nome:</strong> {{idIngresso.nome}}</p>
+                        <p><strong>Preço:</strong> {{idIngresso.preco}}</p>
+                        <p><strong>Quantidade:</strong> {{quantidade}}</p>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+</div>

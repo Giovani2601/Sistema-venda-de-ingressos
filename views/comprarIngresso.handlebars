@@ -1,0 +1,17 @@
+{{#if erro}}
+    <div class="alerta-erro">{{erro}}</div>
+{{/if}}
+
+<div class="form-container">
+    
+    <div>
+        <form action="/compras" method="post">
+            <h1>{{ingresso.nome}}</h1>
+            <p><strong>Quantidade disponível:</strong> {{ingresso.quantidade}}</p>
+            <p><strong>Preço:</strong> R$ {{ingresso.preco}}</p>
+            <input type="hidden" name="idIngresso" value="{{ingresso._id}}">
+            <input type="number" name="quantidade" placeholder="Quantidade desejada">
+            <button type="submit">Comprar ingresso</button>
+        </form>
+    </div>
+</div>

@@ -9,16 +9,39 @@ require("../models/Usuario");
 const Usuario = mongoose.model("usuarios");
 const auth = require("../auth/auth");
 
+//tela para comprar ingressos
+router.get("/comprar/:id", auth.verificaUser, async (req,res) => {
+    const user = req.user;
+    try {
+        const ingresso = await Ingresso.findOne({_id: req.params.id}).lean();
+        if(!ingresso) {
+            req.flash("erro", "Erro, ingresso nao encontrado");
+            return res.redirect("/ingressos");
+        }
+
+        res.render("comprarIngresso", {
+            title: "Comprar ingresso",
+            ingresso: ingresso,
+            erro: req.flash("erro")
+        })
+    } catch(erro) {
+        console.log("erro: "+erro);
+        return res.status(500).json({message: "Erro interno no servidor"});
+    }
+})
+
 //rota para criar compras
 router.post("/", auth.verificaUser, async (req,res) => {
     const user = req.user;
     
     if(!req.body.idIngresso || typeof req.body.idIngresso === undefined || req.body.idIngresso === null) {
-        return res.status(400).json({message: "Erro, ingresso invalido"});
+        req.flash("erro", "Erro, ingresso invalido");
+        return res.redirect(`/compras/comprar/${req.body.idIngresso}`);
     }
 
     if(!req.body.quantidade || typeof req.body.quantidade === undefined || req.body.quantidade === null || req.body.quantidade <= 0) {
-        return res.status(400).json({message: "Erro, quantidade invalida"});
+        req.flash("erro", "Erro, quantidade invalida");
+        return res.redirect(`/compras/comprar/${req.body.idIngresso}`);
     }
 
     try {
@@ -26,11 +49,13 @@ router.post("/", auth.verificaUser, async (req,res) => {
         const ingressoASerComprado = await Ingresso.findOne({_id: req.body.idIngresso});
 
         if(!ingressoASerComprado) {
-            return res.status(404).json({message: "Erro ao verificar ingresso para compra"});
+            req.flash("erro", "Erro ao verificar ingresso para compra");
+            return res.redirect(`/compras/comprar/${req.body.idIngresso}`);
         }
 
         if(req.body.quantidade > ingressoASerComprado.quantidade) {
-            return res.status(400).json({message: "Erro, não é possível comprar uma quantidade de ingressos acima do disponível"});
+            req.flash("erro", "Erro, não é possível comprar uma quantidade de ingressos acima do disponível");
+            return res.redirect(`/compras/comprar/${req.body.idIngresso}`);
         }
 
         ingressoASerComprado.quantidade = ingressoASerComprado.quantidade - req.body.quantidade;
@@ -43,7 +68,8 @@ router.post("/", auth.verificaUser, async (req,res) => {
         })
 
         const compraCriada = await novaCompra.save();
-        return res.status(201).json({message: "Compra realizada com sucesso!!!", compraCriada:compraCriada});
+        req.flash("sucesso", "Compra realizada com sucesso!!!");
+        return res.redirect("/ingressos");
     } catch(erro) {
         console.log("erro: "+erro);
         return res.status(500).json({message: "Erro interno no servidor"});
@@ -55,8 +81,11 @@ router.get("/", auth.verificaUser, async (req,res) => {
     const user = req.user;
 
     try {
-        const compras = await Compra.find({idUsuario: user._id}).populate("idIngresso");
-        return res.status(200).json(compras);
+        const compras = await Compra.find({idUsuario: user._id}).populate("idIngresso").lean();
+        return res.render("meusIngressos", {
+            title: "Meus ingressos",
+            compras: compras
+        })
     } catch(erro) {
         console.log("erro: "+erro);
         return res.status(500).json({message: "Erro interno no servidor"});

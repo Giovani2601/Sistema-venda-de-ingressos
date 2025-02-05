@@ -146,6 +146,10 @@ body {
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.25s;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .botao-comprar:hover {

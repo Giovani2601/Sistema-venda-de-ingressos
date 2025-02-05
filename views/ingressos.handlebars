@@ -20,7 +20,7 @@
                     {{/if}}
                     <p>R$ {{preco}}</p>
                 </div>
-                <button class="botao-comprar" {{#if quantidade}}enabled{{else}}disabled{{/if}}>Comprar</button>
+                <a href="/compras/comprar/{{_id}}" class="botao-comprar {{#unless quantidade}}disabled{{/unless}}">Comprar</a>
         {{/each}}
     </ul>
 </div>
