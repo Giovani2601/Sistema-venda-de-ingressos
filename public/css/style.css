@@ -291,6 +291,8 @@ body {
     border-radius: 2px;
     cursor: pointer;
     transition: all 0.25s;
+    text-decoration: none;
+    font-size: 12px;
 }
 
 .botao-editar:hover {
@@ -306,6 +308,8 @@ body {
     border-radius: 2px;
     cursor: pointer;
     transition: all 0.25s;
+    font-size: 12px;
+    text-decoration: none;
 }
 
 .botao-excluir:hover {

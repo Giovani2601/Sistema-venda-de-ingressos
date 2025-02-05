@@ -1,3 +1,11 @@
+{{#if erro}}
+    <div class="alerta-erro">{{erro}}</div>
+{{/if}}
+
+{{#if sucesso}}
+    <div class="alerta-sucesso">{{sucesso}}</div>
+{{/if}}
+
 <div class="container">
     <h1 class="titulo">{{title}}</h1>
     <div class="admin-area-container">
@@ -15,8 +23,10 @@
                         <p><strong>Preço:</strong> {{preco}}</p>
                         <p><strong>Quantidade:</strong> {{quantidade}}</p>
                         <div>
-                            <button class="botao-editar">Editar</button>
-                            <button class="botao-excluir">Excluir</button>
+                            <a href="/ingressos/editar/{{_id}}" class="botao-editar">Editar</a>
+                            <form action="/ingressos/excluir/{{_id}}" method="POST" style="display:inline;">
+                                <button type="submit" class="botao-excluir" onclick="return confirm('Tem certeza que deseja excluir este ingresso?');">Excluir</button>
+                            </form>
                         </div>
                     </li>
                 {{/each}}

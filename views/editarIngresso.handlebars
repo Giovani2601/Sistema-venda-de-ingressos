@@ -5,11 +5,11 @@
 <div class="form-container">
     <div>
         <h1>{{title}}</h1>
-        <form action="/ingressos" method="post">
+        <form action="/ingressos/editar/{{ingresso._id}}" method="post">
             <input type="text" name="nome" placeholder="Nome">
             <input type="number" step="0.01" name="preco" placeholder="Preço">
             <input type="number" name="quantidade" placeholder="Quantidade">
-            <button type="submit">Adicionar ingresso</button>
+            <button type="submit">Editar ingresso</button>
         </form>
     </div>
 </div>

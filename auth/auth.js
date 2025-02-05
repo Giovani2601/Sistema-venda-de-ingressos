@@ -9,7 +9,8 @@ async function verificaUser(req,res, next) {
     const token = req.cookies.token;
 
     if(!token){
-        return res.status(401).json({message: "Erro, faça login novamente"});
+        req.flash("erro", "Erro, faça login novamente")
+        return res.redirect("/ingressos");
     }
 
     try {
@@ -17,7 +18,8 @@ async function verificaUser(req,res, next) {
         const usuario = await Usuario.findOne({_id: decoded.userId});
 
         if(!usuario) {
-            return res.status(404).json({message: "Erro, usuario nao encontrado"});
+            req.flash("erro", "Erro, usuario nao encontrado")
+            return res.redirect("/ingressos");
         }
 
         req.user = usuario;
@@ -32,7 +34,8 @@ async function verificaAdmin(req,res,next) {
     const token = req.cookies.token;
 
     if(!token){
-        return res.status(401).json({message: "Erro, faça login novamente"});
+        req.flash("erro", "Erro, faça login novamente")
+        return res.redirect("/ingressos");
     }
 
     try {
@@ -40,11 +43,13 @@ async function verificaAdmin(req,res,next) {
         const usuario = await Usuario.findOne({_id: decoded.userId});
 
         if(!usuario) {
-            return res.status(404).json({message: "Erro, usuario nao encontrado"});
+            req.flash("erro", "Erro, usuario nao encontrado")
+            return res.redirect("/ingressos");
         }
 
         if(usuario.isAdmin !== 1) {
-            return res.status(403).json({message: "Erro, apenas admins podem realizar esta ação"});
+            req.flash("erro", "Erro, apenas admins podem realizar esta ação")
+            return res.redirect("/ingressos");
         }
 
         req.user = usuario;

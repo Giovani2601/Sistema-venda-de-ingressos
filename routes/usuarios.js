@@ -139,38 +139,45 @@ router.post("/login", async (req,res) => {
 })
 
 //tela de criar admins
-router.get("/criar-admin", (req,res) => {
+router.get("/criar-admin", auth.verificaAdmin, (req,res) => {
     res.render("criarAdmin", {
-        title: "Criar administrador"
+        title: "Criar administrador",
+        erro: req.flash("erro")
     })
 })
 
 //rota para criar admins (apenas admins)
 router.post("/admin", auth.verificaAdmin, async (req,res) => {
     if(!req.body.nome || typeof req.body.nome === undefined || req.body.nome === null) {
-        return res.status(400).json({message: "Erro, nome de usuario invalido"});
+        req.flash("erro", "Erro, nome de usuario invalido")
+        return res.redirect("/usuarios/criar-admin");
     }
 
     if(!req.body.email || typeof req.body.email === undefined || req.body.email === null) {
-        return res.status(400).json({message: "Erro, e-mail de usuario invalido"});
+        req.flash("erro", "Erro, e-mail de usuario invalido")
+        return res.redirect("/usuarios/criar-admin");
     }
 
     if(!req.body.senha || typeof req.body.senha === undefined || req.body.senha === null) {
-        return res.status(400).json({message: "Erro, senha de usuario invalida"});
+        req.flash("erro", "Erro, senha de usuario invalida")
+        return res.redirect("/usuarios/criar-admin");
     }
 
     if(req.body.senha.length < 4) {
-        return res.status(400).json({message: "Erro, senha muito curta"});
+        req.flash("erro", "Erro, senha muito curta")
+        return res.redirect("/usuarios/criar-admin");
     }
 
     if(req.body.senha2 !== req.body.senha) {
-        return res.status(400).json({message: "Erro, as senhas devem coincidir"})
+        req.flash("erro", "Erro, as senhas devem coincidir")
+        return res.redirect("/usuarios/criar-admin");
     }
 
     try {
         const adminExistente = await Usuario.findOne({email: req.body.email});
         if(adminExistente) {
-            return res.status(400).json({message: "Erro, ja existe um usuario com este email"});
+            req.flash("erro", "Erro, ja existe um usuario com este email")
+            return res.redirect("/usuarios/criar-admin");
         }
 
         const salt = bcryptjs.genSaltSync(10);
@@ -184,7 +191,8 @@ router.post("/admin", auth.verificaAdmin, async (req,res) => {
         })
 
         const adminCriado = await novoAdmin.save();
-        return res.status(201).json({message: "Admin criado com sucesso!!!", adminCriado:adminCriado});
+        req.flash("sucesso", "Admin criado com sucesso!!!");
+        res.redirect("/usuarios/area-admin")
     } catch(erro) {
         console.log("Erro: "+erro);
         return res.status(500).json({message: "Erro interno no servidor"});
@@ -192,12 +200,14 @@ router.post("/admin", auth.verificaAdmin, async (req,res) => {
 })
 
 //tela da area de administradores
-router.get("/area-admin", async (req,res) => {
+router.get("/area-admin", auth.verificaAdmin, async (req,res) => {
     try {
         const ingressos = await Ingresso.find().lean();
         res.render("areaAdmin", {
             title: "Área de administradores",
-            ingressos: ingressos
+            ingressos: ingressos,
+            sucesso: req.flash("sucesso"),
+            erro: req.flash("erro")
         })
     } catch(erro) {
         console.log("erro: "+erro);
